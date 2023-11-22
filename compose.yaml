@@ -1,23 +1,12 @@
+version: '3.8'
+
 services:
-  db: 
-  #service db
-    # We use a mariadb image which supports both amd64 & arm64 architecture
+  db:
     image: mariadb:10.6.4-focal
-    # If you really want to use MySQL, uncomment the following line
-    # image: mysql:8.0.27
     command: '--default-authentication-plugin=mysql_native_password'
-    # method the db server uses to authenticate users who are trying to connect to it
-    # mysql_native plugin is a traditional password-based authentication method used by MySQL and MariaDB
-    # has functions
-    # assert ana > 18, "xxl"
-    # if ana <= 18: raise AssertException("xxl") 
-    # 
     volumes:
       - db_data:/var/lib/mysql
-    # mechanism which allows data po persist outside the lifetime of a single container
     restart: always
-    # always restarted when it goes down
-    # why? high availability /minimize downtime/, fault tolerance, etc.
     environment:
       - MYSQL_ROOT_PASSWORD=somewordpress
       - MYSQL_DATABASE=wordpress
@@ -26,8 +15,8 @@ services:
     expose:
       - 3306
       - 33060
+
   wordpress:
-  
     image: wordpress:latest
     ports:
       - 8080:80
@@ -37,8 +26,8 @@ services:
       - WORDPRESS_DB_USER=wordpress
       - WORDPRESS_DB_PASSWORD=wordpress
       - WORDPRESS_DB_NAME=wordpress
+    volumes:
+      - ./wp-theme:/var/www/html/wp-content/themes/smartcube
+
 volumes:
   db_data:
-
-  
-    
